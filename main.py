@@ -1,7 +1,7 @@
 import logging
 import time
 from app.data_loader.pdf_loader import PdfParser, OcrEngine
-from app.pre_processor.markdown_preprocess import text_splitter
+from app.pre_processor.markdown_preprocess import text_splitter,text_preprocessor
 from app.rag.enhanced_search_engine import EnhancedSearchEngine
 from app.word_embeddings.bert_med_embedding import get_clinical_bert_embeddings
 from app.faiss_db_service.store import store_in_faiss
@@ -48,6 +48,8 @@ class PDFProcessingPipeline:
         """
         Splits extracted text into manageable chunks for embedding processing.
         """
+        logging.info("Text process before splitting...")
+        text = text_preprocessor(text)
         logging.info("Splitting text into chunks...")
         text_chunks = text_splitter.split_text(text)
         logging.info(f"Total chunks created: {len(text_chunks)}")
